@@ -2,6 +2,13 @@ package com.jeronimokulandissa.cursomc.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
+@Entity 		//No mapeamento de objectos relacional, o "@Entity" é usado para indicar que a class "Categoria" será uma entidade do JPA
 public class Categoria implements Serializable
 {
 	/*Serializable é uma interface que difine se os objectos de uma class poderão ser convertidos para uma sequência de Bytes
@@ -10,6 +17,8 @@ public class Categoria implements Serializable
 	
 	private static final long serialVersionUID = 1L; // número de versão padrão
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)	// gerando a estratégia de geração automática dos Ids da Class Categoria
 	private Integer id;
 	private String nome;
 	
