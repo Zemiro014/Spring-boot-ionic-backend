@@ -8,11 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-
-@Entity 		//No mapeamento de objectos relacional, o "@Entity" é usado para indicar que a class "Categoria" será uma entidade do JPA
-public class Categoria implements Serializable
+/* Declarando que a class "Producto" é uma entidade de domínio*/
+@Entity 
+public class Producto implements Serializable
 {
 	/*Serializable é uma interface que difine se os objectos de uma class poderão ser convertidos para uma sequência de Bytes
 	 * Isso é importante pois permite que os objectos sejam gravados em arquivos, trafegar em redes e assim por diante. É uma exigência em Java
@@ -21,26 +23,35 @@ public class Categoria implements Serializable
 	private static final long serialVersionUID = 1L; // número de versão padrão
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)	// gerando a estratégia de geração automática dos Ids da Class Categoria
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
+	private double preco;
 	
-	/* Fazendo associação entre a class "Categoria com a class "Producto"
+	/* Fazendo associação entre a class "Producto" com a class "Categoria"
 	 * 
 	 *  Quando a associação entre dois domínios (tabelas) for de muito
 	 *   para muitos, é preciso declarar o "ManyToMany" e "JoinTable" 
 	 *   na associação
 	 *  */
-	@ManyToMany(mappedBy="categorias") // Mapeando a associação feitano atributo "categorias" da class "Producto" 
-	private List<Producto> productos = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name="PRODUCTO_CATEGORIA", // nome da tabela resultante da associação muito para muitos
+			joinColumns = @JoinColumn(name="producto_id"), // chave-estrangeira vindo da class "Producto"
+			inverseJoinColumns =@JoinColumn(name="categoria_id")// chave-estrangeira vindo da class "Categoria"
+	)
+	private List<Categoria> categorias = new ArrayList<>();
 	
-	public Categoria() {		
-	}
+	public Producto() {	}
 
-	public Categoria(Integer id, String nome) {
+	/* Uma vez que a coleção "categoria" já foi iniciada, ela não precisa 
+	 * ser um parâmetro do construtor
+	 * */
+	public Producto(Integer id, String nome, double preco) 
+	{
 		super();
 		this.id = id;
 		this.nome = nome;
+		this.preco = preco;
 	}
 
 	public Integer getId() {
@@ -58,16 +69,28 @@ public class Categoria implements Serializable
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	public List<Producto> getProductos() {
-		return productos;
+
+	public double getPreco() {
+		return preco;
 	}
 
-	public void setProductos(List<Producto> productos) {
-		this.productos = productos;
-	}	
-	
-	// HashCodeEqual: Serve para comparar os objectos por valor e não pelo ponteiro de memória. É a implementação padrão de comparação de objectos. Normalmente a comparação é feita usando o Id
+	public void setPreco(double preco) {
+		this.preco = preco;
+	}
+
+	public List<Categoria> getCategorias() {
+		return categorias;
+	}
+
+	public void setCategorias(List<Categoria> categorias) {
+		this.categorias = categorias;
+	}
+
+	/*
+	 * HashCodeEqual: Serve para comparar os objectos por valor e não pelo 
+	 * ponteiro de memória. É a implementação padrão de comparação de 
+	 * objectos. Normalmente a comparação é feita usando o Id
+	 * */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -84,13 +107,14 @@ public class Categoria implements Serializable
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Producto other = (Producto) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
+	}	
+	
+	
 }
