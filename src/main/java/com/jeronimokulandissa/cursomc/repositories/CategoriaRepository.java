@@ -16,6 +16,5 @@ public interface CategoriaRepository  extends JpaRepository<Categoria, Integer>
 	 * 
 	 * Todo objecto do tipo CategoriaRepository, está mapeado com a tabela "Categoria"
 	 * no banco de dados e é capaz de realizar operações nesta tabela
-	 * */
-	
+	 * */	
 }
