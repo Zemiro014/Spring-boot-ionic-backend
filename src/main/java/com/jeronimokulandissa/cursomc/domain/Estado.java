@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Estado implements Serializable
 {
@@ -25,7 +27,8 @@ public class Estado implements Serializable
 	 * De Estados para Cidade existe uma associação de -um para muitos- "OneToMany"
 	 * 
 	 * "@OneToMany" é o mapeamento reverso da associação
-	 * */ 
+	 * */
+	@JsonBackReference
 	@OneToMany(mappedBy="estado") // Mapeando o atributo que do outro lado da associação que mapeou o "ManyToOne" 
 	private List<Cidade> cidades = new ArrayList<>();
 	

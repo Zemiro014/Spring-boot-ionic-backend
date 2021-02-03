@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Endereco implements Serializable
 {
@@ -24,6 +26,7 @@ public class Endereco implements Serializable
 	private String cep;
 	
 	// Associação entre "Endereco" e "Cliente": Um "Endereco" pertence apenas a um "Cliente"
+	@JsonBackReference // Está sendo informado que o Endereco não pode serializar o seu cliente (É feito quando duas classes conhecem um ao outro)
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
