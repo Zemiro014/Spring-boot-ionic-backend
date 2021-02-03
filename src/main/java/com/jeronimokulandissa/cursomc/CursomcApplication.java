@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.jeronimokulandissa.cursomc.domain.Categoria;
 import com.jeronimokulandissa.cursomc.domain.Cidade;
+import com.jeronimokulandissa.cursomc.domain.Cliente;
+import com.jeronimokulandissa.cursomc.domain.Endereco;
 import com.jeronimokulandissa.cursomc.domain.Estado;
 import com.jeronimokulandissa.cursomc.domain.Producto;
+import com.jeronimokulandissa.cursomc.domain.enums.TipoCliente;
 import com.jeronimokulandissa.cursomc.repositories.CategoriaRepository;
 import com.jeronimokulandissa.cursomc.repositories.CidadeRepository;
+import com.jeronimokulandissa.cursomc.repositories.ClienteRepository;
+import com.jeronimokulandissa.cursomc.repositories.EnderecoRepository;
 import com.jeronimokulandissa.cursomc.repositories.EstadoRepository;
 import com.jeronimokulandissa.cursomc.repositories.ProductoRepository;
 
@@ -35,6 +40,12 @@ public class CursomcApplication implements CommandLineRunner {
 	@Autowired
 	private CidadeRepository cidadeRerpository;
 	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
 	}
@@ -43,7 +54,10 @@ public class CursomcApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception 
 	{
 		/*Este método auxiliar é usado para inserir os objectos ao banco de 
-		 * dados assim que a aplicação é iniciada*/
+		 * dados assim que a aplicação é iniciada
+		 * 
+		 * Estamos usando ele para povoar o nosso banco de dados
+		 * */
 		
 		Categoria cat1 = new Categoria(null, "Informática");
 		Categoria cat2 = new Categoria(null, "Escritório");
@@ -84,6 +98,17 @@ public class CursomcApplication implements CommandLineRunner {
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRerpository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA );
+		cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 	}
 
 }
