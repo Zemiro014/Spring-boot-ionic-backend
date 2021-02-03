@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /* Declarando que a class "Producto" é uma entidade de domínio*/
 @Entity 
@@ -47,6 +48,7 @@ public class Producto implements Serializable
 	)
 	private List<Categoria> categorias = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="id.producto")
 	private Set<ItemPedido> itens = new HashSet<>(); // É um conjunto de itens
 	
@@ -63,6 +65,7 @@ public class Producto implements Serializable
 		this.preco = preco;
 	}
 	
+	@JsonIgnore
 	public List<Pedido> getPedidos()
 	{
 		List<Pedido> lista = new ArrayList<>();
