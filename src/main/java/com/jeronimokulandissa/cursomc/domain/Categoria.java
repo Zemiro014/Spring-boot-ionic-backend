@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity 		//No mapeamento de objectos relacional, o "@Entity" é usado para indicar que a class "Categoria" será uma entidade do JPA
 public class Categoria implements Serializable
@@ -31,6 +33,8 @@ public class Categoria implements Serializable
 	 *   para muitos, é preciso declarar o "ManyToMany" e "JoinTable" 
 	 *   na associação
 	 *  */
+	
+	@JsonManagedReference // Serve para tratar (resolver) o problema de "referência cíclica" Se não for colocado, o Json vai buscar a lista de categorias e de produtos indefinidamente.
 	@ManyToMany(mappedBy="categorias") // Mapeando a associação feitano atributo "categorias" da class "Producto" 
 	private List<Producto> productos = new ArrayList<>();
 	

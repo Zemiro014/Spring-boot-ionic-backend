@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 /* Declarando que a class "Producto" é uma entidade de domínio*/
 @Entity 
 public class Producto implements Serializable
@@ -34,6 +36,7 @@ public class Producto implements Serializable
 	 *   para muitos, é preciso declarar o "ManyToMany" e "JoinTable" 
 	 *   na associação
 	 *  */
+	@JsonBackReference // Isso diz que: do outro lado da associação já foram obtido os objectos, logo pare a busca
 	@ManyToMany
 	@JoinTable(name="PRODUCTO_CATEGORIA", // nome da tabela resultante da associação muito para muitos
 			joinColumns = @JoinColumn(name="producto_id"), // chave-estrangeira vindo da class "Producto"
