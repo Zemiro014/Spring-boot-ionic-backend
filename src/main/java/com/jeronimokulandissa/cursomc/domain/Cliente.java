@@ -14,8 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jeronimokulandissa.cursomc.domain.enums.TipoCliente;
 
 @Entity
@@ -37,7 +36,7 @@ public class Cliente implements Serializable
 	private Integer tipo;
 	
 	// Associação entre Clinte e endereço: Um "Cliente" possui vários "Endereco" (uma lista de "Endereco")
-	@JsonManagedReference 	// Está sendo informado que o Cliente pode Serializar os seus "enderecos" (É feito quando duas classes conhecem um ao outro)
+	// @JsonManagedReference 	// Está sendo informado que o Cliente pode Serializar os seus "enderecos" (É feito quando duas classes conhecem um ao outro)
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -55,7 +54,8 @@ public class Cliente implements Serializable
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
-	@JsonBackReference
+	// @JsonBackReference trocado por @JsonIgnore 
+	@JsonIgnore
 	@OneToMany(mappedBy="cliente") // Declarando o tipo de associação 1 para muitos, entre o "Cliente" e o "Pedido"
 	private List<Pedido> pedidos = new ArrayList<>();
 	
