@@ -8,8 +8,10 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import com.jeronimokulandissa.cursomc.domain.Cliente;
+import com.jeronimokulandissa.cursomc.services.validation.ClienteUpdate;
 
 // Este é uma class auxiliar para tranferir objectos do tipo Cliente
+@ClienteUpdate
 public class ClienteDTO implements Serializable
 {	
 	private static final long serialVersionUID = 1L;
