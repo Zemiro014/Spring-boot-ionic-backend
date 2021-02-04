@@ -51,8 +51,11 @@ public class CategoriaService
 	
 	public Categoria update (Categoria obj) 
 	{
-		find(obj.getId()); // Verifica se o Id realmente existe
-		return repo.save(obj);
+		// Temos que instanciar um cliente a partir do banco de dados
+		Categoria newObj = find(obj.getId()); 
+		// find(obj.getId());  Verifica se o Id realmente existe
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 	
 	public void delete(Integer id) 
@@ -85,5 +88,15 @@ public class CategoriaService
 	public Categoria fromDTO(CategoriaDTO objDto) 
 	{
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) 
+	{
+		/*
+		 *  O "obj" recebe os novos valores dos campos que serão atualizados.  Esses novos valores serão passados para os campos do "newObj".
+		 *  
+		 *  No "newObj" existem todos os campos. Tanto os que serão atualizado como os que não serão atualiados
+		 * */
+		newObj.setNome(obj.getNome());
 	}
 }
