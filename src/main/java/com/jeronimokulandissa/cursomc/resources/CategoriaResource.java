@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +38,14 @@ public class CategoriaResource
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj)
-	{
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto)
+	{		
 		/*
 		 * O @RequestBody faz com que os dados "Json" que for enviado seja convertido em um objecto do tipo "Categoria"
+		 * O "@Valid" serve para validar o "objDto"
 		 * */
-		obj = service.insert(obj);
-		
+		Categoria obj = service.fromDTO(objDto);
+		obj = service.insert(obj);		
 		/*
 		 * Boa prática de programação. Essa é a chamada que pega a URI do novo recurso que foi inserido
 		 * */ 
@@ -53,8 +56,9 @@ public class CategoriaResource
 	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id)
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id)
 	{
+		Categoria obj = service.fromDTO(objDto);
 		obj.setId(id); // Para o desencargo de consciência. Para garantir que o Id a ser atualizado é o Id que foi passado
 		obj = service.update(obj);
 		
