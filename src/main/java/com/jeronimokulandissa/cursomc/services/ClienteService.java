@@ -3,6 +3,8 @@ package com.jeronimokulandissa.cursomc.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -10,9 +12,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.jeronimokulandissa.cursomc.domain.Cidade;
 import com.jeronimokulandissa.cursomc.domain.Cliente;
+import com.jeronimokulandissa.cursomc.domain.Endereco;
+import com.jeronimokulandissa.cursomc.domain.enums.TipoCliente;
 import com.jeronimokulandissa.cursomc.dto.ClienteDTO;
+import com.jeronimokulandissa.cursomc.dto.ClienteNewDTO;
 import com.jeronimokulandissa.cursomc.repositories.ClienteRepository;
+import com.jeronimokulandissa.cursomc.repositories.EnderecoRepository;
 import com.jeronimokulandissa.cursomc.services.exceptions.DataIntegrityException;
 import com.jeronimokulandissa.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -25,15 +32,27 @@ public class ClienteService
 	 * essa dependência será automáticamente instanciada pelo Spring usando (ID ou IC)
 	 * */
 	@Autowired 
-	private ClienteRepository repo;
+	private ClienteRepository clienteRepository;
+	
+	@Autowired 
+	private EnderecoRepository enderecoRepository;
 	
 	public Cliente find(Integer id) 
 	{
-		Optional<Cliente> obj = repo.findById(id);
+		Optional<Cliente> obj = clienteRepository.findById(id);
 		
 		// Se o objecto retornar nullo vai mostrar uma exception devidamente tratada
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+	}
+	
+	@Transactional
+	public Cliente insert(Cliente obj) 
+	{
+		obj.setId(null); // Garante que o obj a ser inserido tem o Id null. Se o obj tem Id não nullo, então o método "repo.save(obj)" vai considerar que é uma atualização e não inserção
+		obj = clienteRepository.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
 	
 	public Cliente update (Cliente obj) 
@@ -42,7 +61,7 @@ public class ClienteService
 		Cliente newObj = find(obj.getId()); 
 		// find(obj.getId());  Verifica se o Id realmente existe
 		updateData(newObj, obj);
-		return repo.save(newObj);
+		return clienteRepository.save(newObj);
 	}
 	
 	public void delete(Integer id) 
@@ -51,7 +70,7 @@ public class ClienteService
 		
 		try 
 		{
-			repo.deleteById(id);
+			clienteRepository.deleteById(id);
 		}
 		catch(DataIntegrityViolationException e) 
 		{
@@ -62,19 +81,37 @@ public class ClienteService
 	
 	public List<Cliente> findAll()
 	{
-		return repo.findAll();
+		return clienteRepository.findAll();
 	}
 	
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy,  String direction)
 	{
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy );
 		
-		return repo.findAll(pageRequest);		
+		return clienteRepository.findAll(pageRequest);		
 	}
 	
 	public Cliente fromDTO(ClienteDTO objDto) 
 	{
 		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+	}
+	public Cliente fromDTO(ClienteNewDTO objNewDto) 
+	{
+		Cliente cli = new Cliente(null, objNewDto.getNome(), objNewDto.getEmail(), objNewDto.getCpfOuCnpj(), TipoCliente.toEnum(objNewDto.getTipo()));
+		Cidade cid = new Cidade(objNewDto.getCidadeId(), null, null);
+		Endereco end = new Endereco(null, objNewDto.getLogradoura(), objNewDto.getNumero(), objNewDto.getComplemento(), objNewDto.getBairro(), objNewDto.getCep(), cli, cid);
+		cli.getEnderecos().add(end);
+		cli.getTelefones().add(objNewDto.getTelefone());
+		if(objNewDto.getTelefoneOpcao1()!=null) 
+		{
+			cli.getTelefones().add(objNewDto.getTelefoneOpcao1());
+		}
+		if(objNewDto.getTelefoneOpcao2()!=null) 
+		{
+			cli.getTelefones().add(objNewDto.getTelefoneOpcao2());
+		}
+		
+		return cli;
 	}
 	
 	// Método auxiliar
