@@ -26,7 +26,7 @@ public class ResourceExceptionHandler
 	}
 	
 	
-	@ExceptionHandler(DataIntegrityException.class) // Indica que este método trata a exceção do tipo "ObjectNotFoundException"
+	@ExceptionHandler(DataIntegrityException.class) // Indica que este método trata a exceção do tipo "DataIntegrityException"
 	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request)
 	{
 		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
