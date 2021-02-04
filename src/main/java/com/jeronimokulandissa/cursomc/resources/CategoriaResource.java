@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -71,6 +73,22 @@ public class CategoriaResource
 	{
 		List<Categoria> list = service.findAll(); // Buscaum List de Categorias no banco de dados e depois esse List é convertido para List CategoriaDTO pelo código abaixo
 		List<CategoriaDTO> listDTO = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList()); // Convertendo um List  para outro List
+		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	
+	/*
+	 * Realizando Busca de dados por paginação
+	 * */
+	@RequestMapping(value="/page",method = RequestMethod.GET)
+	public ResponseEntity<Page<CategoriaDTO>> findPage(	
+														@RequestParam(value="page", defaultValue="0") Integer page, 
+														@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+														@RequestParam(value="orderBy", defaultValue="nome") String orderBy,  
+														@RequestParam(value="direction", defaultValue="ASC") String direction) 
+	{
+		Page<Categoria> list = service.findPage(page, linesPerPage, orderBy,  direction); // Busca um Page de Categorias no banco de dados e depois esse Page é convertido para Page CategoriaDTO pelo código abaixo
+		Page<CategoriaDTO> listDTO = list.map(obj -> new CategoriaDTO(obj)); // Convertendo um Page  para outro Page
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
