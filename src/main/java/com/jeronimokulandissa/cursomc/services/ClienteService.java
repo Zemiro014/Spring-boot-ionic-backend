@@ -1,13 +1,19 @@
 package com.jeronimokulandissa.cursomc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.jeronimokulandissa.cursomc.domain.Categoria;
 import com.jeronimokulandissa.cursomc.domain.Cliente;
+import com.jeronimokulandissa.cursomc.dto.ClienteDTO;
 import com.jeronimokulandissa.cursomc.repositories.ClienteRepository;
+import com.jeronimokulandissa.cursomc.services.exceptions.DataIntegrityException;
 import com.jeronimokulandissa.cursomc.services.exceptions.ObjectNotFoundException;
 
 
@@ -27,6 +33,59 @@ public class ClienteService
 		
 		// Se o objecto retornar nullo vai mostrar uma exception devidamente tratada
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
+	}
+	
+	public Cliente update (Cliente obj) 
+	{
+		// Temos que instanciar um cliente a partir do banco de dados
+		Cliente newObj = find(obj.getId()); 
+		// find(obj.getId());  Verifica se o Id realmente existe
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+	
+	public void delete(Integer id) 
+	{
+		find(id); // Verifica se o Id realmente existe. Caso não exista, retorna a excessão
+		
+		try 
+		{
+			repo.deleteById(id);
+		}
+		catch(DataIntegrityViolationException e) 
+		{
+			throw new DataIntegrityException("Não é possível excluir porque existem entidades relacionadas");
+		}
+		
+	}
+	
+	public List<Cliente> findAll()
+	{
+		return repo.findAll();
+	}
+	
+	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy,  String direction)
+	{
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy );
+		
+		return repo.findAll(pageRequest);		
+	}
+	
+	public Cliente fromDTO(ClienteDTO objDto) 
+	{
+		return new Cliente(objDto.getId(), objDto.getNome(), objDto.getEmail(), null, null);
+	}
+	
+	// Método auxiliar
+	private void updateData(Cliente newObj, Cliente obj) 
+	{
+		/*
+		 *  O "obj" recebe os novos valores dos campos que serão atualizados.  Esses novos valores serão passados para os campos do "newObj".
+		 *  
+		 *  No "newObj" existem todos os campos. Tanto os que serão atualizado como os que não serão atualiados
+		 * */
+		newObj.setNome(obj.getNome());
+		newObj.setEmail(obj.getEmail());
 	}
 }

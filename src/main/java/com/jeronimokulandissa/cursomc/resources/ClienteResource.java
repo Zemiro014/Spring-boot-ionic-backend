@@ -1,13 +1,22 @@
 package com.jeronimokulandissa.cursomc.resources;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jeronimokulandissa.cursomc.domain.Cliente;
+import com.jeronimokulandissa.cursomc.dto.ClienteDTO;
 import com.jeronimokulandissa.cursomc.services.ClienteService;
 
 
@@ -24,5 +33,46 @@ public class ClienteResource
 	{
 		Cliente obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id)
+	{
+		Cliente obj = service.fromDTO(objDto);
+		obj.setId(id); // Para o desencargo de consciência. Para garantir que o Id a ser atualizado é o Id que foi passado
+		obj = service.update(obj);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer id) 
+	{
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<ClienteDTO>> findAll() 
+	{
+		List<Cliente> list = service.findAll(); // Buscaum List de Clientes no banco de dados e depois esse List é convertido para List ClienteDTO pelo código abaixo
+		List<ClienteDTO> listDTO = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList()); // Convertendo um List  para outro List
+		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	
+	/*
+	 * Realizando Busca de dados por paginação
+	 * */
+	@RequestMapping(value="/page",method = RequestMethod.GET)
+	public ResponseEntity<Page<ClienteDTO>> findPage(	
+														@RequestParam(value="page", defaultValue="0") Integer page, 
+														@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
+														@RequestParam(value="orderBy", defaultValue="nome") String orderBy,  
+														@RequestParam(value="direction", defaultValue="ASC") String direction) 
+	{
+		Page<Cliente> list = service.findPage(page, linesPerPage, orderBy,  direction); // Busca um Page de Clientes no banco de dados e depois esse Page é convertido para Page ClienteDTO pelo código abaixo
+		Page<ClienteDTO> listDTO = list.map(obj -> new ClienteDTO(obj)); // Convertendo um Page  para outro Page
+		return ResponseEntity.ok().body(listDTO);
 	}
 }
