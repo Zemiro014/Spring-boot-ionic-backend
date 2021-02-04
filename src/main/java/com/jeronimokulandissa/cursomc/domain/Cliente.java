@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -37,7 +38,8 @@ public class Cliente implements Serializable
 	
 	// Associação entre Clinte e endereço: Um "Cliente" possui vários "Endereco" (uma lista de "Endereco")
 	// @JsonManagedReference 	// Está sendo informado que o Cliente pode Serializar os seus "enderecos" (É feito quando duas classes conhecem um ao outro)
-	@OneToMany(mappedBy="cliente")
+	// O "cascade = CascadeType.ALL" permite que toda alteração (delete, update) realizada em um Cliente, afetará automáticamente os Enderecos deste Cliente
+	@OneToMany(mappedBy="cliente", cascade = CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	
