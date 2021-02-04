@@ -41,4 +41,10 @@ public class CategoriaService
 		obj.setId(null); // Garante que o obj a ser inserido tem o Id null. Se o obj tem Id não nullo, então o método "repo.save(obj)" vai considerar que é uma atualização e não inserção
 		return repo.save(obj);
 	}
+	
+	public Categoria update (Categoria obj) 
+	{
+		find(obj.getId()); // Verifica se o Id realmente existe
+		return repo.save(obj);
+	}
 }

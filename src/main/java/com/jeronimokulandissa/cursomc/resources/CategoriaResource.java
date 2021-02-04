@@ -24,21 +24,35 @@ public class CategoriaResource
 	private CategoriaService service;
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) 
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) 
 	{
 		Categoria obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@RequestMapping(method=RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj)
 	{
+		/*
+		 * O @RequestBody faz com que os dados "Json" que for enviado seja convertido em um objecto do tipo "Categoria"
+		 * */
 		obj = service.insert(obj);
 		
-		// Essa é a chamada que pega a URI do novo recurso que foi inserido
+		/*
+		 * Boa prática de programação. Essa é a chamada que pega a URI do novo recurso que foi inserido
+		 * */ 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		
 		return ResponseEntity.created(uri).build();
+	}
+	
+	@RequestMapping(value="/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id)
+	{
+		obj.setId(id); // Para o desencargo de consciência. Para garantir que o Id a ser atualizado é o Id que foi passado
+		obj = service.update(obj);
+		
+		return ResponseEntity.noContent().build();
 	}
 }
