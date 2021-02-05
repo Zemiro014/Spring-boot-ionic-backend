@@ -15,7 +15,11 @@
 	<name>cursomc</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
+		<!--  Anterior
 		<java.version>11</java.version>
+		 -->
+		 <!-- Usado para corrigir o Heroku -->
+		 <java.version>1.8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
