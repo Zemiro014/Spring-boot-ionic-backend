@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.jeronimokulandissa.cursomc.domain.enums.EstadoPagamento;
 
 /*
@@ -25,7 +26,8 @@ import com.jeronimokulandissa.cursomc.domain.enums.EstadoPagamento;
  * Para Instanciar ele, é preciso declarar "Pagamento nome = new nomeDaSubClassDela"
  * */ 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED) 
+@Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") // Informa que a class Pagamento terá um campo adicional chamado "type"
 public abstract class Pagamento implements Serializable
 {
 	private static final long serialVersionUID = 1L;
