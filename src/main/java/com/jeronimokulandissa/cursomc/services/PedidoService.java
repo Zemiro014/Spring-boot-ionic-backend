@@ -73,7 +73,8 @@ public class PedidoService
 		}
 		itemPedidoRepository.saveAll(obj.getItens());
 		//System.out.println(obj); // Printa automaticamente o toString() do objecto
-		emailService.sendOrderConfirmationEmail(obj);
+		//emailService.sendOrderConfirmationEmail(obj);
+		emailService.sendOrderConfirmationHtmlEmail(obj);
 		return obj;
 	}
 }
