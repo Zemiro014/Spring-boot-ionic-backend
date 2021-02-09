@@ -39,6 +39,9 @@ public class Cliente implements Serializable
 	 * */ 
 	private Integer tipo;
 	
+	@JsonIgnore
+	private String senha;
+	
 	// Associação entre Clinte e endereço: Um "Cliente" possui vários "Endereco" (uma lista de "Endereco")
 	// @JsonManagedReference 	// Está sendo informado que o Cliente pode Serializar os seus "enderecos" (É feito quando duas classes conhecem um ao outro)
 	// O "cascade = CascadeType.ALL" permite que toda alteração (delete, update) realizada em um Cliente, afetará automáticamente os Enderecos deste Cliente
@@ -66,13 +69,14 @@ public class Cliente implements Serializable
 	
 	public Cliente() {}
 
-	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = ( tipo==null) ? null : tipo.getCod();
+		this.senha = senha;
 	}
 
 	public Integer getId() {
@@ -142,7 +146,16 @@ public class Cliente implements Serializable
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
+	
+	public String getSenha() 
+	{
+		return senha;
+	}
 
+	public void setSenha(String senha)
+	{
+		this.senha = senha;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -167,7 +180,6 @@ public class Cliente implements Serializable
 			return false;
 		return true;
 	}
-
 
 	
 }
