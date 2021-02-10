@@ -2,6 +2,8 @@ package com.jeronimokulandissa.cursomc.dto;
 
 import java.io.Serializable;
 
+
+// Este é a class que irá receber as requisições contendo as credenciais do usuário (usuário -> "email" e senha)
 public class CredenciaisDTO implements Serializable
 {
 	private static final long serialVersionUID = 1L;

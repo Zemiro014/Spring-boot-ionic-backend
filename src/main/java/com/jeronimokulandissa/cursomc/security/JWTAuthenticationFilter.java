@@ -19,7 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeronimokulandissa.cursomc.dto.CredenciaisDTO;
 
-// Este filtro vai interceptar a ação de Login, para verifcar as credenciais do usuário, e depois retorna a 
+/*
+ * Este filtro vai interceptar a ação de Login, para verifcar as credenciais do usuário, e depois retorna
+ * 
+ * Obs: A URL contendo "/login" é reservado para o Spring-Security. Não precisamos criar um EndPoint para ele
+ * */ 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter
 {
 	private AuthenticationManager authenticationManager;
@@ -32,6 +36,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil =jwtUtil;
 	}
+	
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, 
 												HttpServletResponse res) throws AuthenticationException

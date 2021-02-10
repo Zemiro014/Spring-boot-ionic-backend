@@ -2,7 +2,7 @@ package com.jeronimokulandissa.cursomc.domain.enums;
 
 public enum Perfil 
 {
-	ADMIN(1, "ROLE_ADMIN"), // "ROLE_ADMIN" é uma exigência do Spring Security
+	ADMIN(1, "ROLE_ADMIN"), // O prefixo "ROLE_" é uma exigência do Spring-Security
 	CLIENTE(2, "ROLE_CLIENTE");
 	
 	private int cod;

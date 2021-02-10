@@ -65,7 +65,7 @@ public class Cliente implements Serializable
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection(fetch=FetchType.EAGER) // O "fetch=FetchType.EAGER" é usado para garantir que sempre que buscar um "Cliente" no banco de dados, automaticamente vou buscar também os perfis correspondente a este "Cliente"
 	@CollectionTable(name="PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
 	
