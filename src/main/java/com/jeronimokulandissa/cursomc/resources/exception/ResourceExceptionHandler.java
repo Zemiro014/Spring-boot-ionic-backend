@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.jeronimokulandissa.cursomc.services.exceptions.AuthorizationException;
 import com.jeronimokulandissa.cursomc.services.exceptions.DataIntegrityException;
 import com.jeronimokulandissa.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -48,5 +49,13 @@ public class ResourceExceptionHandler
 			err.addError(x.getField(), x.getDefaultMessage());
 		}		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+	}
+	
+	@ExceptionHandler(AuthorizationException.class) // Indica que este método trata a exceção do tipo "AuthorizationException"
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request)
+	{
+		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+		
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
 	}
 }
