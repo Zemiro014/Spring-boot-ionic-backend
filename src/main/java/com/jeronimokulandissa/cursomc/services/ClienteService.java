@@ -123,8 +123,7 @@ public class ClienteService
 		if(objNewDto.getTelefoneOpcao2()!=null) 
 		{
 			cli.getTelefones().add(objNewDto.getTelefoneOpcao2());
-		}
-		
+		}		
 		return cli;
 	}
 	
