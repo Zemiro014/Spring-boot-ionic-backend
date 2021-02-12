@@ -1,5 +1,6 @@
 package com.jeronimokulandissa.cursomc.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -12,8 +13,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.jeronimokulandissa.cursomc.services.exceptions.FileException;
 
 @Service
 public class S3Service {
@@ -25,6 +29,20 @@ public class S3Service {
 	@Value("${s3.bucket}")
 	private String bucketName;
 
+	// Metodo usado para testes rápidos de enviar arquivo para S3 
+	public void uploadFile(String localfile)
+	{
+		try {
+		File file = new File(localfile);
+		LOG.info("Iniciando upload");
+		s3client.putObject(new PutObjectRequest(bucketName, "teste02.jpg", file));
+		LOG.info("upload finalizado");
+		}
+		catch(AmazonServiceException e) 
+		{
+				LOG.info("AmazonServiceException: "+e.getErrorMessage());
+		}
+	}
 	public URI uploadFile(MultipartFile multipartfile) {
 		try {
 		String fileName = multipartfile.getOriginalFilename(); // Extraindo o nome do arquivo que foi enviado pela requisição
@@ -34,7 +52,7 @@ public class S3Service {
 		}
 		catch(IOException e) 
 		{
-			throw new RuntimeException("Erro de IO: " +e.getMessage());
+			throw new FileException("Erro de IO: " +e.getMessage());
 		}
 	}
 
@@ -48,7 +66,7 @@ public class S3Service {
 
 			return s3client.getUrl(bucketName, fileName).toURI();
 		} catch (URISyntaxException e) {
-			throw new RuntimeException("Erro ao converter URL para URI");
+			throw new FileException("Erro ao converter URL para URI");
 		}
 	}
 }
