@@ -40,7 +40,7 @@ public class CategoriaService
 			return obj.orElse(null); */		
 		// Se o objecto retornar nullo vai mostrar uma exception devidamente tratada
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));		
 	}
 	
 	public Categoria insert(Categoria obj) 

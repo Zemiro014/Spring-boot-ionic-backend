@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -42,6 +43,9 @@ public class S3Service {
 		{
 				LOG.info("AmazonServiceException: "+e.getErrorMessage());
 		}
+		catch (AmazonClientException e) {
+			LOG.info("AmazonClientException: " +  e.getMessage());
+		}
 	}
 	public URI uploadFile(MultipartFile multipartfile) {
 		try {
@@ -61,7 +65,7 @@ public class S3Service {
 			ObjectMetadata meta = new ObjectMetadata();
 			meta.setContentType(contentType);
 			LOG.info("Iniciando upload");
-			s3client.putObject(fileName, contentType, is, meta);
+			s3client.putObject(bucketName, fileName, is, meta);
 			LOG.info("upload finalizado");
 
 			return s3client.getUrl(bucketName, fileName).toURI();

@@ -60,7 +60,6 @@ public class ClienteService
 		}
 		
 		Optional<Cliente> obj = clienteRepository.findById(id);
-		
 		// Se o objecto retornar nullo vai mostrar uma exception devidamente tratada
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
@@ -147,6 +146,15 @@ public class ClienteService
 	
 	public URI uploadProfilePicture(MultipartFile multiparteFile) 
 	{
-		return s3Service.uploadFile(multiparteFile);
+		UserSS user = UserService.authenticated(); // Pega  as informações do usuário autenticado (logado)
+		if(user==null) 
+		{
+			throw new AuthorizationException("Acesso negado");
+		}
+		URI uri = s3Service.uploadFile(multiparteFile);
+		Cliente cli = find(user.getId());
+		cli.setImageURL(uri.toString());
+		clienteRepository.save(cli);
+		return uri;		
 	}
 }
