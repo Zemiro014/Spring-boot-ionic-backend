@@ -74,7 +74,7 @@ public class Cliente implements Serializable
 	@OneToMany(mappedBy="cliente") // Declarando o tipo de associação 1 para muitos, entre o "Cliente" e o "Pedido"
 	private List<Pedido> pedidos = new ArrayList<>();
 	
-	private String imageURL;
+	//private String imageURL;
 	
 	public Cliente() 
 	{
@@ -206,6 +206,7 @@ public class Cliente implements Serializable
 		return true;
 	}
 
+	/*
 	public String getImageURL() {
 		return imageURL;
 	}
@@ -213,6 +214,6 @@ public class Cliente implements Serializable
 	public void setImageURL(String imageURL) {
 		this.imageURL = imageURL;
 	}
-
+*/
 	
 }
