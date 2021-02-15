@@ -54,7 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	private static final String[] PUBLIC_MATCHERS_GET = {
 			// Todas URLs que contem em seu corpo as informações abaixo, estão permitidos para realizar a pesquisa de dados ao sistema 
 			"/productos/**", 
-			"/categorias/**"
+			"/categorias/**",
+			"/estados/**"
+			
 	};
 	
 	private static final String[] PUBLIC_MATCHERS_POST = {
