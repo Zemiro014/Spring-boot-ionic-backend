@@ -85,6 +85,93 @@ public class DBService
 		Producto p10 = new Producto(null, "Pendente",180.00);
 		Producto p11 = new Producto(null, "Shampoor",90.00);
 		
+		/* Linhas adicionados para povoar*/
+		
+		Producto p12 = new Producto(null, "Producto 12", 10.00);
+		Producto p13 = new Producto(null, "Producto 13", 10.00);
+		Producto p14 = new Producto(null, "Producto 14", 10.00);
+		Producto p15 = new Producto(null, "Producto 15", 10.00);
+		Producto p16 = new Producto(null, "Producto 16", 10.00);
+		Producto p17 = new Producto(null, "Producto 17", 10.00);
+		Producto p18 = new Producto(null, "Producto 18", 10.00);
+		Producto p19 = new Producto(null, "Producto 19", 10.00);
+		Producto p20 = new Producto(null, "Producto 20", 10.00);
+		Producto p21 = new Producto(null, "Producto 21", 10.00);
+		Producto p22 = new Producto(null, "Producto 22", 10.00);
+		Producto p23 = new Producto(null, "Producto 23", 10.00);
+		Producto p24 = new Producto(null, "Producto 24", 10.00);
+		Producto p25 = new Producto(null, "Producto 25", 10.00);
+		Producto p26 = new Producto(null, "Producto 26", 10.00);
+		Producto p27 = new Producto(null, "Producto 27", 10.00);
+		Producto p28 = new Producto(null, "Producto 28", 10.00);
+		Producto p29 = new Producto(null, "Producto 29", 10.00);
+		Producto p30 = new Producto(null, "Producto 30", 10.00);
+		Producto p31 = new Producto(null, "Producto 31", 10.00);
+		Producto p32 = new Producto(null, "Producto 32", 10.00);
+		Producto p33 = new Producto(null, "Producto 33", 10.00);
+		Producto p34 = new Producto(null, "Producto 34", 10.00);
+		Producto p35 = new Producto(null, "Producto 35", 10.00);
+		Producto p36 = new Producto(null, "Producto 36", 10.00);
+		Producto p37 = new Producto(null, "Producto 37", 10.00);
+		Producto p38 = new Producto(null, "Producto 38", 10.00);
+		Producto p39 = new Producto(null, "Producto 39", 10.00);
+		Producto p40 = new Producto(null, "Producto 40", 10.00);
+		Producto p41 = new Producto(null, "Producto 41", 10.00);
+		Producto p42 = new Producto(null, "Producto 42", 10.00);
+		Producto p43 = new Producto(null, "Producto 43", 10.00);
+		Producto p44 = new Producto(null, "Producto 44", 10.00);
+		Producto p45 = new Producto(null, "Producto 45", 10.00);
+		Producto p46 = new Producto(null, "Producto 46", 10.00);
+		Producto p47 = new Producto(null, "Producto 47", 10.00);
+		Producto p48 = new Producto(null, "Producto 48", 10.00);
+		Producto p49 = new Producto(null, "Producto 49", 10.00);
+		Producto p50 = new Producto(null, "Producto 50", 10.00);
+		
+		cat1.getProductos().addAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
+		p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38,
+		p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
+		
+		p12.getCategorias().add(cat1);
+		p13.getCategorias().add(cat1);
+		p14.getCategorias().add(cat1);
+		p15.getCategorias().add(cat1);
+		p16.getCategorias().add(cat1);
+		p17.getCategorias().add(cat1);
+		p18.getCategorias().add(cat1);
+		p19.getCategorias().add(cat1);
+		p20.getCategorias().add(cat1);
+		p21.getCategorias().add(cat1);
+		p22.getCategorias().add(cat1);
+		p23.getCategorias().add(cat1);
+		p24.getCategorias().add(cat1);
+		p25.getCategorias().add(cat1);
+		p26.getCategorias().add(cat1);
+		p27.getCategorias().add(cat1);
+		p28.getCategorias().add(cat1);
+		p29.getCategorias().add(cat1);
+		p30.getCategorias().add(cat1);
+		p31.getCategorias().add(cat1);
+		p32.getCategorias().add(cat1);
+		p33.getCategorias().add(cat1);
+		p34.getCategorias().add(cat1);
+		p35.getCategorias().add(cat1);
+		p36.getCategorias().add(cat1);
+		p37.getCategorias().add(cat1);
+		p38.getCategorias().add(cat1);
+		p39.getCategorias().add(cat1);
+		p40.getCategorias().add(cat1);
+		p41.getCategorias().add(cat1);
+		p42.getCategorias().add(cat1);
+		p43.getCategorias().add(cat1);
+		p44.getCategorias().add(cat1);
+		p45.getCategorias().add(cat1);
+		p46.getCategorias().add(cat1);
+		p47.getCategorias().add(cat1);
+		p48.getCategorias().add(cat1);
+		p49.getCategorias().add(cat1);
+		p50.getCategorias().add(cat1);
+		/*Fim da adição*/
+		
 		/*
 		 * Fazendo a associação das categorias com os seus respectivos productos
 		 * 
@@ -116,6 +203,9 @@ public class DBService
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2, cat3, cat4, cat5, cat6, cat7));
 		productoRepository.saveAll(Arrays.asList(p1,p2,p3, p4, p5, p6, p7, p8, p9, p10, p11));
 		
+		productoRepository.saveAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
+				p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38,
+				p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
 		
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
